@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AniForge AI</title>
+  
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color"
+  content="#6c5ce7"
+  
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f18;
+    color: white;
+}
+
+.app {
+    max-width: 520px;
+    margin: auto;
+    padding: 20px;
+    padding-bottom: 90px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 34px;
+    margin: 10px 0;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa;
+}
+
+.card {
+    background: #1b1b29;
+    padding: 18px;
+    border-radius: 18px;
+    margin: 15px 0;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.card p {
+    color: #aaa;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 13px;
+    background: #6c5ce7;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.secondary {
+    background: #29293a;
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    padding: 15px;
+    border-radius: 13px;
+    border: 1px solid #444;
+    background: #11111b;
+    color: white;
+    font-size: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: #181824;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #333;
+}
+
+.nav-btn {
+    background: none;
+    margin: 0;
+    padding: 8px;
+    width: auto;
+    color: #aaa;
+    font-size: 13px;
+}
+
+.nav-btn.active {
+    color: white;
+}
+
+.feature {
+    text-align: center;
+    padding: 25px 15px;
+}
+
+.feature-icon {
+    font-size: 45px;
+}
+
+.creation {
+    background: #29293a;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 10px;
+}
+
+.setting {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #333;
+}
+</style>
+</>
+
+<body>
+
+<div class="app">
+
+<!-- HOME -->
+<div id="home">
+
+<h1>✨ AniForge AI</h1>
+
+<p class="subtitle">
+Create. Imagine. Animate.
+</p>
+
+<div class="card feature">
+<div class="feature-icon">🎨</div>
+<h2>Turn Ideas Into Art</h2>
+<p>
+Create anime images, shorts and edit photos.
+</p>
+</div>
+
+<div class="card">
+<h2>🔥 Welcome</h2>
+<p>
+Start creating your first project with AniForge AI.
+</p>
+
+<button onclick="showPage('create')">
+✨ Start Creating
+</button>
+</div>
+
+</div>
+
+
+<!-- CREATE -->
+<div id="create" class="hidden">
+
+<h1>✨ Create</h1>
+
+<div class="card">
+
+<h2>🎨 Anime Image</h2>
+
+<p>
+Describe your anime scene.
+</p>
+
+<textarea id="prompt"
+placeholder="A hero standing on a mountain at sunset..."></textarea>
+
+<button onclick="generateIdea()">
+Generate
+</button>
+
+<p id="result"></p>
+
+</div>
+
+
+<div class="card">
+
+<h2>🎬 Anime Short</h2>
+
+<p>
+Create your story scene by scene.
+</p>
+
+<button onclick="showPage('short')">
+Open Anime Short
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h2>🖼️ Photo Editor</h2>
+
+<p>
+Upload and edit your photo.
+</p>
+
+<button onclick="showPage('editor')">
+Open Photo Editor
+</button>
+
+</div>
+
+</div>
+
+
+<!-- SHORT -->
+<div id="short" class="hidden">
+
+<h1>🎬 Anime Short</h1>
+
+<div class="card">
+
+<textarea id="scene"
+placeholder="Describe your scene..."></textarea>
+
+<button onclick="addScene()">
+➕ Add Scene
+</button>
+
+<div id="scenes"></div>
+
+</div>
+
+</div>
+
+
+<!-- EDITOR -->
+<div id="editor" class="hidden">
+
+<h1>🖼️ Photo Editor</h1>
+
+<div class="card">
+
+<input type="file"
+id="photo"
+accept="image/*">
+
+<br><br>
+
+<canvas id="canvas"
+style="width:100%; border-radius:12px;">
+</canvas>
+
+<br>
+
+<button onclick="savePhoto()">
+💾 Save Edited Photo
+</button>
+
+</div>
+
+</div>
+
+
+<!-- GALLERY -->
+<div id="gallery" class="hidden">
+
+<h1>📁 Gallery</h1>
+
+<div class="card">
+
+<div id="galleryList">
+<p>No creations yet.</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SETTINGS -->
+<div id="settings" class="hidden">
+
+<h1>⚙️ Settings</h1>
+
+<div class="card">
+
+<div class="setting">
+<span>App</span>
+<span>AniForge AI</span>
+</div>
+
+<div class="setting">
+<span>Version</span>
+<span>1.0</span>
+</div>
+
+<div class="setting">
+<span>AI Generation</span>
+<span>Coming Soon</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<button class="nav-btn active"
+onclick="showPage('home')">
+🏠<br>Home
+</button>
+
+<button class="nav-btn"
+onclick="showPage('create')">
+✨<br>Create
+</button>
+
+<button class="nav-btn"
+onclick="showPage('gallery')">
+📁<br>Gallery
+</button>
+
+<button class="nav-btn"
+onclick="showPage('settings')">
+⚙️<br>Settings
+</button>
+
+</div>
+
+
+<script>
+
+let pages = [
+    "home",
+    "create",
+    "short",
+    "editor",
+    "gallery",
+    "settings"
+];
+
+function showPage(page) {
+
+    pages.forEach(function(p) {
+
+        document.getElementById(p)
+        .classList.add("hidden");
+
+    });
+
+    document.getElementById(page)
+    .classList.remove("hidden");
+
+    window.scrollTo(0, 0);
+}
+
+
+/* AI IDEA */
+
+function generateIdea() {
+
+    let prompt =
+    document.getElementById("prompt")
+    .value.trim();
+
+    if (!prompt) {
+
+        document.getElementById("result")
+        .innerText =
+        "Please enter an idea first.";
+
+        return;
+    }
+
+    document.getElementById("result")
+    .innerText =
+    "✨ Your anime idea:\n" + prompt;
+
+    saveCreation(
+        "Anime Idea",
+        prompt
+    );
+}
+
+
+/* ANIME SHORT */
+
+let sceneNumber = 0;
+
+function addScene() {
+
+    let text =
+    document.getElementById("scene")
+    .value.trim();
+
+    if (!text) {
+
+        alert("Write a scene first.");
+
+        return;
+    }
+
+    sceneNumber++;
+
+    let box =
+    document.createElement("div");
+
+    box.className = "creation";
+
+    box.innerHTML =
+    "<b>Scene " +
+    sceneNumber +
+    "</b><br><br>" +
+    text;
+
+    document.getElementById("scenes")
+    .appendChild(box);
+
+    saveCreation(
+        "Anime Scene " + sceneNumber,
+        text
+    );
+
+    document.getElementById("scene")
+    .value = "";
+}
+
+
+/* GALLERY */
+
+function saveCreation(title, text) {
+
+    let data =
+    JSON.parse(
+        localStorage.getItem(
+            "aniforge"
+        ) || "[]"
+    );
+
+    data.push({
+        title: title,
+        text: text
+    });
+
+    localStorage.setItem(
+        "aniforge",
+        JSON.stringify(data)
+    );
+}
+
+
+function loadGallery() {
+
+    let data =
+    JSON.parse(
+        localStorage.getItem(
+            "aniforge"
+        ) || "[]"
+    );
+
+    let list =
+    document.getElementById("galleryList");
+
+    if (data.length === 0) {
+
+        list.innerHTML =
+        "<p>No creations yet.</p>";
+
+        return;
+    }
+
+    list.innerHTML = "";
+
+    data.forEach(function(item) {
+
+        let box =
+        document.createElement("div");
+
+        box.className =
+        "creation";
+
+        box.innerHTML =
+        "<b>" +
+        item.title +
+        "</b><br><br>" +
+        item.text;
+
+        list.appendChild(box);
+
+    });
+}
+
+
+/* PHOTO EDITOR */
+
+let canvas =
+document.getElementById("canvas");
+
+let ctx =
+canvas.getContext("2d");
+
+let image =
+new Image();
+
+document.getElementById("photo")
+.addEventListener(
+"change",
+function(event) {
+
+    let file =
+    event.target.files[0];
+
+    if (!file) return;
+
+    let reader =
+    new FileReader();
+
+    reader.onload =
+    function(e) {
+
+        image.onload =
+        function() {
+
+            canvas.width =
+            image.width;
+
+            canvas.height =
+            image.height;
+
+            ctx.drawImage(
+                image,
+                0,
+                0
+            );
+
+        };
+
+        image.src =
+        e.target.result;
+    };
+
+    reader.readAsDataURL(file);
+
+});
+
+
+function savePhoto() {
+
+    if (!image.src) {
+
+        alert(
+        "Upload a photo first."
+        );
+
+        return;
+    }
+
+    let link =
+    document.createElement("a");
+
+    link.download =
+    "aniforge-photo.png";
+
+    link.href =
+    canvas.toDataURL(
+    "image/png"
+    );
+
+    link.click();
+}
+
+
+/* LOAD GALLERY */
+
+loadGallery();
+
+</script>
+
+</body>
+</html>
