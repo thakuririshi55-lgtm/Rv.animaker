@@ -1,496 +1,873 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+<title>AniForge AI</title>
 
-  <title>AniForge AI</title>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f18;
+    color: white;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f18;
-      color: white;
-    }
+.app {
+    max-width: 520px;
+    margin: auto;
+    padding: 20px;
+    padding-bottom: 100px;
+}
 
-    .app {
-      max-width: 520px;
-      margin: auto;
-      padding: 20px;
-      padding-bottom: 100px;
-    }
+h1 {
+    text-align: center;
+    font-size: 34px;
+    margin: 10px 0;
+}
 
-    h1 {
-      text-align: center;
-      font-size: 34px;
-      margin: 10px 0;
-    }
+.subtitle {
+    text-align: center;
+    color: #aaa;
+}
 
-    .subtitle {
-      text-align: center;
-      color: #aaa;
-      margin-bottom: 25px;
-    }
+.card {
+    background: #1b1b29;
+    padding: 18px;
+    border-radius: 18px;
+    margin: 15px 0;
+}
 
-    .card {
-      background: #1b1b29;
-      padding: 20px;
-      border-radius: 18px;
-      margin: 15px 0;
-    }
+.card h2 {
+    margin-top: 0;
+}
 
-    .card h2 {
-      margin-top: 0;
-    }
+.card p {
+    color: #aaa;
+    line-height: 1.5;
+}
 
-    .card p {
-      color: #aaa;
-      line-height: 1.5;
-    }
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    border-radius: 12px;
+    border: 1px solid #444;
+    background: #11111b;
+    color: white;
+    font-size: 15px;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 13px;
-      background: #6c5ce7;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+textarea {
+    height: 110px;
+    resize: vertical;
+}
 
-    button:active {
-      transform: scale(0.98);
-    }
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 13px;
+    background: #6c5ce7;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
 
-    .secondary {
-      background: #29293a;
-    }
+.secondary {
+    background: #29293a;
+}
 
-    textarea {
-      width: 100%;
-      height: 130px;
-      padding: 15px;
-      border-radius: 13px;
-      border: 1px solid #444;
-      background: #11111b;
-      color: white;
-      font-size: 16px;
-      resize: vertical;
-    }
+.danger {
+    background: #8e3b46;
+}
 
-    .hidden {
-      display: none;
-    }
+.scene {
+    background: #29293a;
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 12px;
+}
 
-    .feature {
-      text-align: center;
-      padding: 25px 15px;
-    }
+.scene-number {
+    font-size: 13px;
+    color: #aaa;
+}
 
-    .feature-icon {
-      font-size: 50px;
-    }
+.scene-title {
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 5px;
+}
 
-    .creation {
-      background: #29293a;
-      padding: 15px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
+.scene-description {
+    color: #ddd;
+    margin-top: 8px;
+    line-height: 1.5;
+}
 
-    .setting {
-      display: flex;
-      justify-content: space-between;
-      padding: 15px 0;
-      border-bottom: 1px solid #333;
-    }
+.scene-info {
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 10px;
+}
 
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 75px;
-      background: #181824;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #333;
-      z-index: 100;
-    }
+.scene-buttons {
+    display: flex;
+    gap: 6px;
+}
 
-    .nav-btn {
-      background: none;
-      margin: 0;
-      padding: 8px;
-      width: auto;
-      color: #aaa;
-      font-size: 13px;
-    }
+.scene-buttons button {
+    flex: 1;
+    font-size: 13px;
+}
 
-    .nav-btn.active {
-      color: white;
-    }
+.hidden {
+    display: none;
+}
 
-    .result {
-      margin-top: 15px;
-      padding: 15px;
-      border-radius: 12px;
-      background: #29293a;
-      color: #ddd;
-    }
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 75px;
+    background: #181824;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #333;
+    z-index: 100;
+}
 
-    .loading {
-      text-align: center;
-      color: #aaa;
-      padding: 20px;
-    }
+.nav-btn {
+    background: none;
+    margin: 0;
+    padding: 8px;
+    width: auto;
+    color: #aaa;
+    font-size: 13px;
+}
 
-    .logo {
-      font-size: 42px;
-      text-align: center;
-      margin-top: 10px;
-    }
+.nav-btn.active {
+    color: white;
+}
 
-    input[type="file"] {
-      width: 100%;
-      padding: 12px;
-      background: #29293a;
-      color: white;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-  </style>
+.result {
+    background: #29293a;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <!-- HOME -->
-    <section id="homePage">
+<!-- HOME -->
 
-      <div class="logo">✨</div>
+<section id="homePage">
 
-      <h1>AniForge AI</h1>
+<h1>✨ AniForge AI</h1>
 
-      <div class="subtitle">
-        Create. Imagine. Animate.
-      </div>
+<p class="subtitle">
+Create. Imagine. Animate.
+</p>
 
-      <div class="card feature">
-        <div class="feature-icon">🎨</div>
+<div class="card">
 
-        <h2>Turn Ideas Into Art</h2>
+<h2>🎬 Anime Story Studio</h2>
 
-        <p>
-          Create anime images, shorts and edit photos.
-        </p>
+<p>
+Build your anime story scene by scene.
+</p>
 
-        <button onclick="openCreate()">
-          ✨ Start Creating
-        </button>
-      </div>
+<button onclick="openCreate()">
+✨ Start Creating
+</button>
 
-      <div class="card">
-        <h2>🔥 Welcome</h2>
+</div>
 
-        <p>
-          Start creating your first project with AniForge AI.
-        </p>
+<div class="card">
 
-        <button onclick="openCreate()">
-          ✨ Create Project
-        </button>
-      </div>
+<h2>🚀 Your Creative Studio</h2>
 
-    </section>
+<p>
+Create anime ideas, build storyboards and organize your projects.
+</p>
 
+</div>
 
-    <!-- CREATE -->
-    <section id="createPage" class="hidden">
+</section>
 
-      <h1>✨ Create</h1>
 
-      <div class="card">
+<!-- CREATE -->
 
-        <h2>📝 Anime Generator</h2>
+<section id="createPage" class="hidden">
 
-        <p>
-          Describe the anime scene you want to create.
-        </p>
+<h1>✨ Create</h1>
 
-        <textarea
-          id="prompt"
-          placeholder="Example: A young hero walking through a magical forest at sunset..."
-        ></textarea>
+<div class="card">
 
-        <button onclick="generateAnime()">
-          ✨ Generate Anime
-        </button>
+<h2>🎨 Anime Image</h2>
 
-        <div id="result" class="result hidden"></div>
+<p>
+Describe the image you want to create.
+</p>
 
-      </div>
+<textarea
+id="prompt"
+placeholder="A hero standing on a mountain at sunset..."
+></textarea>
 
+<button onclick="generateIdea()">
+✨ Generate Idea
+</button>
 
-      <div class="card">
+<div id="ideaResult"></div>
 
-        <h2>🎬 Anime Short</h2>
+</div>
 
-        <p>
-          Turn your idea into an anime short project.
-        </p>
 
-        <button onclick="animeShort()">
-          🎬 Create Anime Short
-        </button>
+<div class="card">
 
-      </div>
+<h2>🎬 Anime Short</h2>
 
+<p>
+Build your short movie using a storyboard.
+</p>
 
-      <div class="card">
+<button onclick="openStoryboard()">
+🎬 Open Storyboard
+</button>
 
-        <h2>🖼️ Photo Editor</h2>
+</div>
 
-        <p>
-          Choose a photo to prepare it for editing.
-        </p>
 
-        <input
-          type="file"
-          id="photoInput"
-          accept="image/*"
-        >
+<div class="card">
 
-        <button onclick="editPhoto()">
-          🖼️ Edit Photo
-        </button>
+<h2>🖼️ Photo Editor</h2>
 
-        <div id="photoResult"></div>
+<input
+type="file"
+id="photoInput"
+accept="image/*"
+>
 
-      </div>
+<button onclick="selectPhoto()">
+🖼️ Select Photo
+</button>
 
-    </section>
+<div id="photoResult"></div>
 
+</div>
 
-    <!-- GALLERY -->
-    <section id="galleryPage" class="hidden">
+</section>
 
-      <h1>📁 My Creations</h1>
 
-      <div id="gallery">
+<!-- STORYBOARD -->
 
-        <div class="card">
-          <h2>🌟 Your creations</h2>
+<section id="storyboardPage" class="hidden">
 
-          <p>
-            Projects you create will appear here.
-          </p>
-        </div>
+<h1>🎬 Storyboard</h1>
 
-      </div>
+<div class="card">
 
-    </section>
+<h2>📖 Your Anime Short</h2>
 
+<p>
+Build your story one scene at a time.
+</p>
 
-    <!-- SETTINGS -->
-    <section id="settingsPage" class="hidden">
+<label>Scene title</label>
 
-      <h1>⚙️ Settings</h1>
+<input
+id="sceneTitle"
+placeholder="Example: The Beginning"
+>
 
-      <div class="card">
+<label>Scene description</label>
 
-        <div class="setting">
-          <span>App Name</span>
-          <span>AniForge AI</span>
-        </div>
+<textarea
+id="sceneDescription"
+placeholder="Describe what happens in this scene..."
+></textarea>
 
-        <div class="setting">
-          <span>Version</span>
-          <span>1.0</span>
-        </div>
+<label>Scene type</label>
 
-        <div class="setting">
-          <span>Theme</span>
-          <span>Dark</span>
-        </div>
+<select id="sceneType">
 
-      </div>
+<option>Opening</option>
+<option>Action</option>
+<option>Dialogue</option>
+<option>Adventure</option>
+<option>Emotional</option>
+<option>Ending</option>
 
-    </section>
+</select>
 
-  </div>
+<label>Duration (seconds)</label>
 
+<input
+id="sceneDuration"
+type="number"
+min="1"
+value="5"
+>
 
-  <!-- BOTTOM NAVIGATION -->
+<button onclick="addScene()">
+➕ Add Scene
+</button>
 
-  <div class="bottom-nav">
+</div>
 
-    <button
-      class="nav-btn active"
-      onclick="showPage('homePage', this)">
-      🏠<br>Home
-    </button>
 
-    <button
-      class="nav-btn"
-      onclick="showPage('createPage', this)">
-      ✨<br>Create
-    </button>
+<div class="card">
 
-    <button
-      class="nav-btn"
-      onclick="showPage('galleryPage', this)">
-      📁<br>Gallery
-    </button>
+<h2>📋 Your Scenes</h2>
 
-    <button
-      class="nav-btn"
-      onclick="showPage('settingsPage', this)">
-      ⚙️<br>Settings
-    </button>
+<div id="sceneList">
+<p>No scenes yet.</p>
+</div>
 
-  </div>
+<button onclick="saveStoryboard()">
+💾 Save Storyboard
+</button>
 
+</div>
 
-  <script>
+</section>
 
-    function showPage(pageId, button) {
 
-      const pages = [
+<!-- GALLERY -->
+
+<section id="galleryPage" class="hidden">
+
+<h1>📁 My Creations</h1>
+
+<div class="card">
+
+<div id="galleryList">
+<p>No saved projects yet.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section id="settingsPage" class="hidden">
+
+<h1>⚙️ Settings</h1>
+
+<div class="card">
+
+<div>
+<b>App</b>
+<p>AniForge AI</p>
+</div>
+
+<div>
+<b>Version</b>
+<p>1.1 Storyboard Edition</p>
+</div>
+
+<div>
+<b>AI Generation</b>
+<p>Not connected yet</p>
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+<button
+class="nav-btn active"
+onclick="showPage('homePage', this)"
+>
+🏠<br>Home
+</button>
+
+<button
+class="nav-btn"
+onclick="showPage('createPage', this)"
+>
+✨<br>Create
+</button>
+
+<button
+class="nav-btn"
+onclick="showPage('galleryPage', this)"
+>
+📁<br>Gallery
+</button>
+
+<button
+class="nav-btn"
+onclick="showPage('settingsPage', this)"
+>
+⚙️<br>Settings
+</button>
+
+</div>
+
+
+<script>
+
+let scenes = [];
+
+
+/* NAVIGATION */
+
+function showPage(pageId, button) {
+
+    const pages = [
         "homePage",
         "createPage",
+        "storyboardPage",
         "galleryPage",
         "settingsPage"
-      ];
+    ];
 
-      pages.forEach(function(page) {
-        document.getElementById(page)
-          .classList.add("hidden");
-      });
+    pages.forEach(function(page) {
 
-      document.getElementById(pageId)
-        .classList.remove("hidden");
+        document
+        .getElementById(page)
+        .classList.add("hidden");
 
-      document.querySelectorAll(".nav-btn")
-        .forEach(function(btn) {
-          btn.classList.remove("active");
-        });
+    });
 
-      if (button) {
+    document
+    .getElementById(pageId)
+    .classList.remove("hidden");
+
+    document
+    .querySelectorAll(".nav-btn")
+    .forEach(function(btn) {
+
+        btn.classList.remove("active");
+
+    });
+
+    if (button) {
         button.classList.add("active");
-      }
-
-      window.scrollTo(0, 0);
     }
 
-
-    function openCreate() {
-
-      const createButton =
-        document.querySelectorAll(".nav-btn")[1];
-
-      showPage("createPage", createButton);
-    }
+    window.scrollTo(0, 0);
+}
 
 
-    function generateAnime() {
+function openCreate() {
 
-      const prompt =
-        document.getElementById("prompt").value.trim();
+    const button =
+    document.querySelectorAll(".nav-btn")[1];
 
-      const result =
-        document.getElementById("result");
+    showPage("createPage", button);
 
-      if (prompt === "") {
+}
 
-        result.classList.remove("hidden");
+
+function openStoryboard() {
+
+    showPage("storyboardPage");
+
+}
+
+
+/* ANIME IDEA */
+
+function generateIdea() {
+
+    const prompt =
+    document
+    .getElementById("prompt")
+    .value
+    .trim();
+
+    const result =
+    document
+    .getElementById("ideaResult");
+
+    if (!prompt) {
 
         result.innerHTML =
-          "⚠️ Please describe your anime idea first.";
+        "<div class='result'>⚠️ Write an idea first.</div>";
 
         return;
-      }
-
-      result.classList.remove("hidden");
-
-      result.innerHTML =
-        "🚀 Creating your anime idea...<br><br>" +
-        "📝 Prompt: " + escapeHTML(prompt) +
-        "<br><br>" +
-        "ℹ️ AI image generation will be connected in the next step.";
-
     }
 
+    result.innerHTML =
+    "<div class='result'>" +
+    "✨ Your anime idea:<br><br>" +
+    escapeHTML(prompt) +
+    "</div>";
 
-    function animeShort() {
-
-      alert(
-        "🎬 Anime Short creator is ready for AI integration."
-      );
-
-    }
+}
 
 
-    function editPhoto() {
+/* ADD SCENE */
 
-      const input =
-        document.getElementById("photoInput");
+function addScene() {
 
-      const output =
-        document.getElementById("photoResult");
+    const title =
+    document
+    .getElementById("sceneTitle")
+    .value
+    .trim();
 
-      if (!input.files.length) {
+    const description =
+    document
+    .getElementById("sceneDescription")
+    .value
+    .trim();
 
-        output.innerHTML =
-          "<div class='result'>⚠️ Please choose a photo first.</div>";
+    const type =
+    document
+    .getElementById("sceneType")
+    .value;
+
+    const duration =
+    document
+    .getElementById("sceneDuration")
+    .value;
+
+    if (!title || !description) {
+
+        alert(
+        "Please enter a title and description."
+        );
 
         return;
-      }
+    }
 
-      const file = input.files[0];
+    scenes.push({
 
-      const imageURL =
-        URL.createObjectURL(file);
+        title: title,
 
-      output.innerHTML = `
-        <div class="result">
-          ✅ Photo selected successfully.
-          <br><br>
-          <img
-            src="${imageURL}"
-            style="width:100%;border-radius:12px;"
-          >
-          <button onclick="alert('🖼️ Photo editor will be connected in the next step.')">
-            ✨ Continue Editing
-          </button>
-        </div>
-      `;
+        description: description,
+
+        type: type,
+
+        duration: duration
+
+    });
+
+    document
+    .getElementById("sceneTitle")
+    .value = "";
+
+    document
+    .getElementById("sceneDescription")
+    .value = "";
+
+    document
+    .getElementById("sceneDuration")
+    .value = "5";
+
+    renderScenes();
+
+}
+
+
+/* DISPLAY SCENES */
+
+function renderScenes() {
+
+    const list =
+    document
+    .getElementById("sceneList");
+
+    list.innerHTML = "";
+
+    if (scenes.length === 0) {
+
+        list.innerHTML =
+        "<p>No scenes yet.</p>";
+
+        return;
+    }
+
+    scenes.forEach(function(scene, index) {
+
+        const box =
+        document.createElement("div");
+
+        box.className = "scene";
+
+        box.innerHTML =
+
+        "<div class='scene-number'>" +
+        "SCENE " + (index + 1) +
+        "</div>" +
+
+        "<div class='scene-title'>" +
+        escapeHTML(scene.title) +
+        "</div>" +
+
+        "<div class='scene-description'>" +
+        escapeHTML(scene.description) +
+        "</div>" +
+
+        "<div class='scene-info'>" +
+        "🎭 " + escapeHTML(scene.type) +
+        " • ⏱️ " + scene.duration + " sec" +
+        "</div>" +
+
+        "<div class='scene-buttons'>" +
+
+        "<button onclick='moveSceneUp(" +
+        index + ")'>⬆️</button>" +
+
+        "<button onclick='moveSceneDown(" +
+        index + ")'>⬇️</button>" +
+
+        "<button class='danger' onclick='deleteScene(" +
+        index + ")'>🗑️</button>" +
+
+        "</div>";
+
+        list.appendChild(box);
+
+    });
+
+}
+
+
+/* MOVE UP */
+
+function moveSceneUp(index) {
+
+    if (index === 0) {
+        return;
+    }
+
+    const temp =
+    scenes[index - 1];
+
+    scenes[index - 1] =
+    scenes[index];
+
+    scenes[index] =
+    temp;
+
+    renderScenes();
+
+}
+
+
+/* MOVE DOWN */
+
+function moveSceneDown(index) {
+
+    if (index === scenes.length - 1) {
+        return;
+    }
+
+    const temp =
+    scenes[index + 1];
+
+    scenes[index + 1] =
+    scenes[index];
+
+    scenes[index] =
+    temp;
+
+    renderScenes();
+
+}
+
+
+/* DELETE */
+
+function deleteScene(index) {
+
+    if (
+        confirm(
+        "Delete this scene?"
+        )
+    ) {
+
+        scenes.splice(index, 1);
+
+        renderScenes();
 
     }
 
+}
 
-    function escapeHTML(text) {
 
-      const div = document.createElement("div");
+/* SAVE STORYBOARD */
 
-      div.textContent = text;
+function saveStoryboard() {
 
-      return div.innerHTML;
+    if (scenes.length === 0) {
+
+        alert(
+        "Add at least one scene first."
+        );
+
+        return;
     }
 
-  </script>
+    const projects =
+    JSON.parse(
+        localStorage.getItem(
+        "aniforgeProjects"
+        ) || "[]"
+    );
+
+    projects.push({
+
+        title:
+        "Anime Short - " +
+        new Date().toLocaleDateString(),
+
+        scenes:
+        scenes
+
+    });
+
+    localStorage.setItem(
+        "aniforgeProjects",
+        JSON.stringify(projects)
+    );
+
+    alert(
+    "🎉 Storyboard saved!"
+    );
+
+    loadGallery();
+
+}
+
+
+/* GALLERY */
+
+function loadGallery() {
+
+    const projects =
+    JSON.parse(
+        localStorage.getItem(
+        "aniforgeProjects"
+        ) || "[]"
+    );
+
+    const list =
+    document
+    .getElementById("galleryList");
+
+    if (projects.length === 0) {
+
+        list.innerHTML =
+        "<p>No saved projects yet.</p>";
+
+        return;
+    }
+
+    list.innerHTML = "";
+
+    projects.forEach(function(project) {
+
+        const box =
+        document.createElement("div");
+
+        box.className = "scene";
+
+        box.innerHTML =
+        "<b>🎬 " +
+        escapeHTML(project.title) +
+        "</b><br><br>" +
+
+        "Scenes: " +
+        project.scenes.length;
+
+        list.appendChild(box);
+
+    });
+
+}
+
+
+/* PHOTO */
+
+function selectPhoto() {
+
+    const input =
+    document
+    .getElementById("photoInput");
+
+    const result =
+    document
+    .getElementById("photoResult");
+
+    if (!input.files.length) {
+
+        result.innerHTML =
+        "<div class='result'>⚠️ Choose a photo first.</div>";
+
+        return;
+    }
+
+    const url =
+    URL.createObjectURL(
+    input.files[0]
+    );
+
+    result.innerHTML =
+
+    "<div class='result'>" +
+
+    "✅ Photo selected!" +
+
+    "<br><br>" +
+
+    "<img src='" +
+    url +
+    "' style='width:100%;border-radius:12px;'>" +
+
+    "</div>";
+
+}
+
+
+/* SECURITY */
+
+function escapeHTML(text) {
+
+    const div =
+    document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* START */
+
+loadGallery();
+
+</script>
 
 </body>
-</html>
+  </html>
