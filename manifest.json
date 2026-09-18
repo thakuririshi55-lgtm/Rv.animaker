@@ -1,9 +1,11 @@
 {
   "name": "AniForge AI",
   "short_name": "AniForge",
-  "start_url": "index.html",
+  "start_url": "./",
+  "scope": "./",
+  "id": "./",
   "display": "standalone",
   "background_color": "#0f0f18",
   "theme_color": "#6c5ce7",
-  "description": "Create anime images, shorts and edit photos."
+  "description": "Create anime images, short stories and storyboards with AniForge AI."
 }
