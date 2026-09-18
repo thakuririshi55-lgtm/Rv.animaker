@@ -867,6 +867,10 @@ function escapeHTML(text) {
 
 loadGallery();
 
+<<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./SW.js");
+}
 </script>
 
 </body>
